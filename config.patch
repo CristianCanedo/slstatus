@@ -1,0 +1,4 @@
+69c69
+< 	{ vol_perc, " | Vol: %s%",           "hw:1" },
+---
+> 	{ vol_perc, " | Vol: %s\%", "hw:1" },
