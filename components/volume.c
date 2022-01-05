@@ -191,14 +191,17 @@
         snd_ctl_elem_id_t *id;
         snd_ctl_elem_value_t *control;
 
-        // To find card and subdevice: /proc/asound/, aplay -L, amixer controls
+        /* To find cards on your system: arecord -l
+         * To find devices on your system: arecord -L
+         * To find controls for a card: amixer -c N controls
+         * To find scontrols (mixers) for a card: amixer -c N scontrols
+         */
         snd_hctl_open(&hctl, card, 0);
         snd_hctl_load(hctl);
 
         snd_ctl_elem_id_alloca(&id);
         snd_ctl_elem_id_set_interface(id, SND_CTL_ELEM_IFACE_MIXER);
 
-        // amixer controls
         snd_ctl_elem_id_set_name(id, "Master Playback Volume");
 
         snd_hctl_elem_t *elem = snd_hctl_find_elem(hctl, id);
@@ -212,6 +215,16 @@
         snd_hctl_close(hctl);
         return bprintf("%d", vol & 0xff);
     }
+
+    // pactl list:
+    // alsa.class generic
+    // alsa.subclass generic-mix
+    // alsa.name && alsa.id ALC887-VD Analog
+    // alsa.subdevice 0
+    // alsa.device 0
+    // alsa.card 1
+    // alsa.card_name HD-Audio Generic
+    // device.string front:1
 
 	//#include <sys/soundcard.h>
 	/*const char *
